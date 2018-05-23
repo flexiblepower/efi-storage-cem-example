@@ -63,5 +63,5 @@ The jar of the application can be found at `/target/storage-cem-example-0.0.1-SN
 In order to run the application, you need to have the URL of an EFI Resource Manager which you can access through a WebSocket. If the URL is for example `ws://device.com/storage`, you can start the application using the following command:
 
 ```
-java -jar java -jar target/storage-cem-example-0.0.1-SNAPSHOT-jar-with-dependencies.jar ws://device.com/storage
+java -jar target/storage-cem-example-0.0.1-SNAPSHOT-jar-with-dependencies.jar ws://device.com/storage
 ```

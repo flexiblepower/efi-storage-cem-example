@@ -4,11 +4,19 @@ This project is an example implementation for a *Customer Energy Manager* (CEM) 
 
 ### Introduction
 
-TODO
+The way we use energy is evolving. The introduction of intermittent renewable energy sources such as wind energy and solar energy, and new electricity intensive devices such as electric vehicles and electric heating for buildings, makes it difficult to keep the power grid in balance. Using the energy flexibility of devices and clever software, we can shift the energy consumption and production to other times to balance the grid. Unfortunately there are many types, brands and models of devices, each with their own specific protocols, which makes it hard for software to interact with all these devices to utilze the energy flexibility. There are simply too many protocols out there to support for one piece of software.
 
-### Purpose
+The Energy Flexibility Interface (EFI) fixes this problem by introducing a protocol which purely focuses on energy flexibility, instead of a protocol which implements all the features of a device. A device is represented by a piece of software called the Resource Manager (RM), which translates the device specific interface into EFI. Using EFI, the Resource Manager can communicate with a Customer Energy Manager (CEM). The CEM makes decisions on how to utilize the energy flexibility of the device. With EFI, the device is always in charge, making sure the device is not damaged and user comfort is guaranteed. Typically, each building has a CEM. A CEM can communicate with many Resource Managers, but a Resource Manager always communicates with one CEM.
 
-This application can be used for demostration purposes, as a starting point for creating a CEM implementation or as inspiration for how to implement a CEM in another programming language. Please bare in mind that this example is not complete; not all EFI Storage features are implemented.
+EFI consist out of four sub protocols called categories: Inflexible, Shiftable, Adjustable and Storage. Each category is used to model a different kind of energy flexibility. This application only implements the Storage category. It does not support all this EFI Storage features.
+
+EFI is an XML based, message based protocol. It uses bi-directional asynchronous messaging. This means that both the CEM and the RM can send a message whenever they want. The EFI XML messages are formalized using XSD.
+
+Technical resources of EFI can be found on [Github](https://github.com/flexiblepower/efi).
+
+### Purpose of this application
+
+This application can be used for demonstration purposes, as a starting point for creating a CEM implementation or as inspiration for how to implement a CEM in another programming language. Please bare in mind that this example is not complete; not all EFI Storage features are implemented.
 
 ### Used technologies
 Apache Maven to download dependencies, generate code and to build the application. JAXB is used for parsing and generating XML. Jetty is used as the websocket client. The graphical user interface is implented using Java Swing.
@@ -34,7 +42,7 @@ After checking out the software using git, or downloading it, go into the projec
 cd efi-storage-cem-example/
 ```
 
-The first thin to do is to generate use JAXB to generate Java classes for the XML elements. JAXB uses the EFI [XSD](https://en.wikipedia.org/wiki/XML_Schema_(W3C)) file to generate Java classes. This way it becomes easier to parse and create XML messages is Java. Without these generated classe, the code would not compile. The XSD is already part of the project. Since Maven has to download some components, you need to have an internet connection. Generate the classes using the follwing Maven command:
+The first thin to do is to generate use JAXB to generate Java classes for the XML elements. JAXB uses the EFI [XSD](https://en.wikipedia.org/wiki/XML_Schema_(W3C)) file to generate Java classes. This way it becomes easier to parse and create XML messages is Java. Without these generated classes, the code would not compile. The XSD is already part of the project. Since Maven has to download some components, you need to have an Internet connection. Generate the classes using the following Maven command:
 
 ```
 mvn generate-sources
@@ -52,10 +60,8 @@ The jar of the application can be found at `/target/storage-cem-example-0.0.1-SN
 
 ## Running the application
 
-In order to run the application, you need to have the URL of an EFI Resource Mananger which you can access through a WebSocket. If the url is for example `ws://device.com/storage`, you can start the application using the following command:
+In order to run the application, you need to have the URL of an EFI Resource Manager which you can access through a WebSocket. If the URL is for example `ws://device.com/storage`, you can start the application using the following command:
 
 ```
 java -jar java -jar target/storage-cem-example-0.0.1-SNAPSHOT-jar-with-dependencies.jar ws://device.com/storage
 ```
-
-## Structure of the application

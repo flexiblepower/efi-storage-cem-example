@@ -150,12 +150,21 @@ public class UserInterface implements Observer {
 					final JSpinner spinner = new JSpinner(new SpinnerNumberModel(0.0, 0.0, 1.0, 0.1));
 					actuatorPanel.add(spinner);
 					activateButton = new JButton("Activate");
-					activateButton.addActionListener(e -> model.activateContinuousRunningMode(a.getActuatorId(),
-							rm.getId(), (double) spinner.getValue()));
+					activateButton.addActionListener(e -> {
+						this.executor.submit(() -> {
+							model.activateContinuousRunningMode(a.getActuatorId(), rm.getId(),
+									(double) spinner.getValue());
+						});
+					});
 					actuatorPanel.add(activateButton);
 				} else {
 					actuatorPanel.add(new JLabel("Type: Discrete"));
 					activateButton = new JButton("Activate");
+					activateButton.addActionListener(e -> {
+						this.executor.submit(() -> {
+							model.activateDiscreteRunningMode(a.getActuatorId(), rm.getId());
+						});
+					});
 					actuatorPanel.add(activateButton);
 				}
 				this.rmActivateButtons.get(a.getActuatorId()).put(rm.getId(), activateButton);
